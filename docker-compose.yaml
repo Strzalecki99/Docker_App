@@ -1,0 +1,26 @@
+services:
+  db:
+    build: ./Database
+    container_name: postgres_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=movielens_db
+    ports:
+      - 5432:5432
+    volumes:
+      - ./Database/ml-latest-small:/mnt/data
+
+  analytics:
+    build: ./Analytics
+    container_name: analytics_container
+    ports:
+      - 8888:8888
+    depends_on:
+      - db
+    links:
+      - db
+    volumes:
+      - ./Analytics:/Analytics
+
+    
